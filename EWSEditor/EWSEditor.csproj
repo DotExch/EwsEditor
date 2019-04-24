@@ -114,9 +114,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Exchange.WebServices">
-      <HintPath>deps\Microsoft.Exchange.WebServices.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.IdentityModel.Clients.ActiveDirectory.5.2.4\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
@@ -1717,6 +1714,12 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ews-managed-api\Microsoft.Exchange.WebServices.Data.csproj">
+      <Project>{f059972f-0561-4203-abb8-3abb41ccbe22}</Project>
+      <Name>Microsoft.Exchange.WebServices.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>md "$(TargetDir)EwsPostExamples"
@@ -1727,7 +1730,6 @@ md "$(TargetDir)Testing"
 Copy /Y "$(ProjectDir)AdditionalProperties\*.*" "$(TargetDir)AdditionalPropertiesExamples\*.*"
 Copy /Y "$(ProjectDir)EwsPostExamples\*.*" "$(TargetDir)EwsPostExamples\*.*"
 Copy /Y "$(ProjectDir)HtmlBodyExamples\*.*" "$(TargetDir)HtmlBodyExamples\*.*"
-Copy /Y "$(ProjectDir)deps\Microsoft.Exchange.WebServices.dll" "$(TargetDir)"
 Copy /Y "$(ProjectDir)Special\Filer.txt" "$(TargetDir)Testing"
 Copy /Y "$(ProjectDir)Special\Filer.txt" "$(TargetDir)Export"</PostBuildEvent>
   </PropertyGroup>
