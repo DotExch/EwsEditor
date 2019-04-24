@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using System.Text;
 using System.Xml;
 using EWSEditor.Logging;
 using EWSEditor.PropertyInformation.SmartViews;
 using EWSEditor.PropertyInformation.TypeValues;
+using Microsoft.Exchange.WebServices.Autodiscover;
 using Microsoft.Exchange.WebServices.Data;
 
 namespace EWSEditor.PropertyInformation
@@ -75,6 +77,12 @@ namespace EWSEditor.PropertyInformation
             }
         }
 
+        public PropertyInterpretation(GetUserSettingsResponse owner, UserSettingName userSettingName)
+        {
+            Name = GetPropertyName(userSettingName);
+            Value = GetPropertyValue(owner, userSettingName, out TypeName);
+        }
+
         #endregion
 
         #region Public Methods
@@ -138,6 +146,11 @@ namespace EWSEditor.PropertyInformation
         public static string GetPropertyName(PropertyInfo prop)
         {
             return prop.Name;
+        }
+
+        public static string GetPropertyName(UserSettingName userSettingName)
+        {
+            return userSettingName.ToString();
         }
 
         /// <summary>
@@ -395,6 +408,28 @@ namespace EWSEditor.PropertyInformation
             }
 
             return value;
+        }
+
+        public string GetPropertyValue(GetUserSettingsResponse owner, UserSettingName userSettingName, out string typeName)
+        {
+            object value = null;
+            typeName = string.Empty;
+            if (owner.Settings.TryGetValue(userSettingName, out value))
+            {
+                if (value == null)
+                    return string.Empty;
+                typeName = value.GetType().FullName;
+                ITypeValue interpreter = TypeValueFinder.GetTypeInterpreter(value.GetType());
+                return interpreter != null ? interpreter.GetValue(value) : value.ToString();
+            }
+            foreach (UserSettingError err in owner.UserSettingErrors)
+            {
+                if (err.SettingName != userSettingName.ToString())
+                    continue;
+                typeName = typeof(UserSettingError).FullName;
+                return $"{err.ErrorCode}: {err.ErrorMessage}";
+            }
+            return string.Empty;
         }
 
         /// <summary>

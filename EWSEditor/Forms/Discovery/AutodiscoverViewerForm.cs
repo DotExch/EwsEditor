@@ -182,6 +182,7 @@ namespace EWSEditor.Forms
                
                 if (response.ErrorCode == AutodiscoverErrorCode.NoError)
                 {
+                    AutodiscoverResultForm.Show(this, new [] { new AutodiscoverResultForm.AutodiscoverResult(response, service.Url) });
                     string sLine = string.Empty;
                     sLine += "Finished.  \r\n";
                     sLine += "Response Redirect Target: " + response.RedirectTarget + "\r\n";
@@ -438,12 +439,12 @@ namespace EWSEditor.Forms
 
         private void rdoUseUserSpecifiedUrl_CheckedChanged(object sender, EventArgs e)
         {
-            txtAutodiscoverServiceURL.Enabled = rdoUseUserSpecifiedUrl.Checked;
+            btnDefault365Settings.Enabled = txtAutodiscoverServiceURL.Enabled = rdoUseUserSpecifiedUrl.Checked;
         }
 
         private void rdoUseAutoDiscover_CheckedChanged(object sender, EventArgs e)
         {
-            txtAutodiscoverServiceURL.Enabled = rdoUseUserSpecifiedUrl.Checked;
+            btnDefault365Settings.Enabled = txtAutodiscoverServiceURL.Enabled = rdoUseUserSpecifiedUrl.Checked;
         }
 
         private void lblInfo_Click(object sender, EventArgs e)
@@ -472,6 +473,11 @@ namespace EWSEditor.Forms
         private void TempExchangeVersionCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnDefault365Settings_Click(object sender, EventArgs e)
+        {
+            txtAutodiscoverServiceURL.Text = "https://autodiscover-s.outlook.com/autodiscover/autodiscover.svc";
         }
     }
 }

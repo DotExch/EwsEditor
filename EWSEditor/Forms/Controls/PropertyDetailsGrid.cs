@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using EWSEditor.Logging;
 using EWSEditor.PropertyInformation;
+using Microsoft.Exchange.WebServices.Autodiscover;
 using Microsoft.Exchange.WebServices.Data;
 
 namespace EWSEditor.Forms.Controls
@@ -324,8 +326,7 @@ namespace EWSEditor.Forms.Controls
 
             GridDataTables.PropertyListDataTable propList = new GridDataTables.PropertyListDataTable();
 
-            ServiceObject so = obj as ServiceObject;
-            if (so != null)
+            if (obj is ServiceObject so)
             {
                 foreach (PropertyDefinitionBase baseProp in so.GetLoadedPropertyDefinitions())
                 {
@@ -367,6 +368,30 @@ namespace EWSEditor.Forms.Controls
                         // Add the row to the table
                         propList.AddPropertyListRow(row);
                     }
+                }
+            }
+            else if (obj is GetUserSettingsResponse resp)
+            {
+                var availableUserSettings = new HashSet<UserSettingName>(resp.Settings.Keys);
+                foreach (UserSettingError err in resp.UserSettingErrors)
+                {
+                    if (Enum.TryParse(err.SettingName, out UserSettingName v))
+                        availableUserSettings.Add(v);
+                }
+                foreach (UserSettingName userSetting in availableUserSettings)
+                {
+                    GridDataTables.PropertyListRow row = propList.NewPropertyListRow();
+                    var propInter = new PropertyInterpretation(resp, userSetting);
+                    row.Name = propInter.Name;
+                    row.Value = propInter.Value;
+                    row.Type = propInter.TypeName;
+                    row.PropertyObject = userSetting;
+                    row.SortName = row.Name;
+                    //if (row.Type == typeof(UserSettingError).FullName)
+                    row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
+
+                    // Add the row to the table
+                    propList.AddPropertyListRow(row);
                 }
             }
             else

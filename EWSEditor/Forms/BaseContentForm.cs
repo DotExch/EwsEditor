@@ -28,6 +28,11 @@ namespace EWSEditor.Forms
         }
 
         /// <summary>
+        /// Allows using the BaseContentForm for things that are not actually from ExchangeService
+        /// </summary>
+        protected virtual bool IsServiceLess => false;
+
+        /// <summary>
         /// Gets or sets the form which created this form.
         /// </summary>
         protected Form CallingForm
@@ -187,7 +192,7 @@ namespace EWSEditor.Forms
         {
             // CurrentService should only be NULL here if we are in design mode
             // or there is an bug in form so bail out and do nothing.
-            if (this.CurrentService == null) 
+            if (this.CurrentService == null && !IsServiceLess)
             { 
                 return; 
             }
