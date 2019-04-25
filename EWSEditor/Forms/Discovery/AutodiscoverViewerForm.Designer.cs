@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
       this.GoRun = new System.Windows.Forms.Button();
-      this.txtInfo = new System.Windows.Forms.TextBox();
       this.label11 = new System.Windows.Forms.Label();
       this.lblHeader3Value = new System.Windows.Forms.Label();
       this.lblHeader2Value = new System.Windows.Forms.Label();
@@ -44,6 +43,7 @@
       this.chkOptHeader2 = new System.Windows.Forms.CheckBox();
       this.chkOptHeader1 = new System.Windows.Forms.CheckBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.btnDefault365Settings = new System.Windows.Forms.Button();
       this.txtAutodiscoverServiceURL = new System.Windows.Forms.TextBox();
       this.rdoUseAutoDiscover = new System.Windows.Forms.RadioButton();
       this.rdoUseUserSpecifiedUrl = new System.Windows.Forms.RadioButton();
@@ -55,15 +55,9 @@
       this.txtProxyServerName = new System.Windows.Forms.TextBox();
       this.lblProxyServer = new System.Windows.Forms.Label();
       this.btnDefaultSmtp = new System.Windows.Forms.Button();
-      this.label6 = new System.Windows.Forms.Label();
-      this.txtValues = new System.Windows.Forms.TextBox();
       this.chkOverrideUserAgent = new System.Windows.Forms.CheckBox();
       this.cmboUserAgent = new System.Windows.Forms.ComboBox();
       this.label5 = new System.Windows.Forms.Label();
-      this.label4 = new System.Windows.Forms.Label();
-      this.lvItems = new System.Windows.Forms.ListView();
-      this.colType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.colValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.txtResults = new System.Windows.Forms.TextBox();
       this.chkPreAuthenticate = new System.Windows.Forms.CheckBox();
       this.chkEnableScpLookup = new System.Windows.Forms.CheckBox();
@@ -79,8 +73,7 @@
       this.label2 = new System.Windows.Forms.Label();
       this.label3 = new System.Windows.Forms.Label();
       this.TargetMailboxLabel = new System.Windows.Forms.Label();
-      this.TargetMailboxText = new System.Windows.Forms.TextBox();
-      this.btnDefault365Settings = new System.Windows.Forms.Button();
+      this.TargetMailboxesText = new System.Windows.Forms.TextBox();
       this.groupBox2.SuspendLayout();
       this.groupBox3.SuspendLayout();
       this.groupBox1.SuspendLayout();
@@ -96,16 +89,6 @@
       this.GoRun.Text = "Run";
       this.GoRun.UseVisualStyleBackColor = true;
       this.GoRun.Click += new System.EventHandler(this.btnGo_Click);
-      // 
-      // txtInfo
-      // 
-      this.txtInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.txtInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-      this.txtInfo.Location = new System.Drawing.Point(4, 218);
-      this.txtInfo.Name = "txtInfo";
-      this.txtInfo.Size = new System.Drawing.Size(653, 13);
-      this.txtInfo.TabIndex = 25;
       // 
       // label11
       // 
@@ -231,13 +214,24 @@
       this.groupBox2.Controls.Add(this.rdoUseAutoDiscover);
       this.groupBox2.Controls.Add(this.rdoUseUserSpecifiedUrl);
       this.groupBox2.Location = new System.Drawing.Point(9, 4);
-      this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+      this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+      this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
       this.groupBox2.Size = new System.Drawing.Size(374, 67);
       this.groupBox2.TabIndex = 0;
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "AutoDiscover Service";
+      // 
+      // btnDefault365Settings
+      // 
+      this.btnDefault365Settings.Enabled = false;
+      this.btnDefault365Settings.Location = new System.Drawing.Point(299, 41);
+      this.btnDefault365Settings.Name = "btnDefault365Settings";
+      this.btnDefault365Settings.Size = new System.Drawing.Size(70, 23);
+      this.btnDefault365Settings.TabIndex = 3;
+      this.btnDefault365Settings.Text = "365 Default";
+      this.btnDefault365Settings.UseVisualStyleBackColor = true;
+      this.btnDefault365Settings.Click += new System.EventHandler(this.btnDefault365Settings_Click);
       // 
       // txtAutodiscoverServiceURL
       // 
@@ -342,36 +336,13 @@
       // 
       // btnDefaultSmtp
       // 
-      this.btnDefaultSmtp.Location = new System.Drawing.Point(326, 172);
+      this.btnDefaultSmtp.Location = new System.Drawing.Point(326, 222);
       this.btnDefaultSmtp.Name = "btnDefaultSmtp";
       this.btnDefaultSmtp.Size = new System.Drawing.Size(49, 23);
       this.btnDefaultSmtp.TabIndex = 4;
       this.btnDefaultSmtp.Text = "Default";
       this.btnDefaultSmtp.UseVisualStyleBackColor = true;
       this.btnDefaultSmtp.Click += new System.EventHandler(this.btnDefaultSmtp_Click);
-      // 
-      // label6
-      // 
-      this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label6.AutoSize = true;
-      this.label6.Location = new System.Drawing.Point(2, 398);
-      this.label6.Name = "label6";
-      this.label6.Size = new System.Drawing.Size(138, 13);
-      this.label6.TabIndex = 31;
-      this.label6.Text = "Value (shows multiple lines):";
-      // 
-      // txtValues
-      // 
-      this.txtValues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.txtValues.Location = new System.Drawing.Point(4, 415);
-      this.txtValues.MaxLength = 0;
-      this.txtValues.Multiline = true;
-      this.txtValues.Name = "txtValues";
-      this.txtValues.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-      this.txtValues.Size = new System.Drawing.Size(756, 67);
-      this.txtValues.TabIndex = 32;
-      this.txtValues.TextChanged += new System.EventHandler(this.txtValues_TextChanged);
       // 
       // chkOverrideUserAgent
       // 
@@ -395,57 +366,17 @@
       // label5
       // 
       this.label5.AutoSize = true;
-      this.label5.Location = new System.Drawing.Point(2, 233);
+      this.label5.Location = new System.Drawing.Point(1, 403);
       this.label5.Name = "label5";
       this.label5.Size = new System.Drawing.Size(37, 13);
       this.label5.TabIndex = 27;
       this.label5.Text = "Errors:";
       // 
-      // label4
-      // 
-      this.label4.AutoSize = true;
-      this.label4.Location = new System.Drawing.Point(2, 311);
-      this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(33, 13);
-      this.label4.TabIndex = 29;
-      this.label4.Text = "Data:";
-      // 
-      // lvItems
-      // 
-      this.lvItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.lvItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colType,
-            this.colValue});
-      this.lvItems.FullRowSelect = true;
-      this.lvItems.HideSelection = false;
-      this.lvItems.Location = new System.Drawing.Point(4, 328);
-      this.lvItems.MultiSelect = false;
-      this.lvItems.Name = "lvItems";
-      this.lvItems.Size = new System.Drawing.Size(756, 69);
-      this.lvItems.TabIndex = 30;
-      this.lvItems.UseCompatibleStateImageBehavior = false;
-      this.lvItems.View = System.Windows.Forms.View.Details;
-      this.lvItems.SelectedIndexChanged += new System.EventHandler(this.lvItems_SelectedIndexChanged);
-      this.lvItems.Click += new System.EventHandler(this.lvItems_Click);
-      this.lvItems.DoubleClick += new System.EventHandler(this.lvItems_DoubleClick);
-      // 
-      // colType
-      // 
-      this.colType.Text = "Type";
-      this.colType.Width = 300;
-      // 
-      // colValue
-      // 
-      this.colValue.Text = "Value";
-      this.colValue.Width = 500;
-      // 
       // txtResults
       // 
       this.txtResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.txtResults.Location = new System.Drawing.Point(4, 249);
+      this.txtResults.Location = new System.Drawing.Point(4, 419);
       this.txtResults.MaxLength = 0;
       this.txtResults.Multiline = true;
       this.txtResults.Name = "txtResults";
@@ -479,7 +410,7 @@
       // 
       this.TempExchangeVersionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.TempExchangeVersionCombo.FormattingEnabled = true;
-      this.TempExchangeVersionCombo.Location = new System.Drawing.Point(91, 194);
+      this.TempExchangeVersionCombo.Location = new System.Drawing.Point(91, 177);
       this.TempExchangeVersionCombo.Name = "TempExchangeVersionCombo";
       this.TempExchangeVersionCombo.Size = new System.Drawing.Size(221, 21);
       this.TempExchangeVersionCombo.TabIndex = 6;
@@ -488,7 +419,7 @@
       // label7
       // 
       this.label7.AutoSize = true;
-      this.label7.Location = new System.Drawing.Point(2, 194);
+      this.label7.Location = new System.Drawing.Point(2, 180);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(77, 13);
       this.label7.TabIndex = 5;
@@ -588,29 +519,21 @@
       // TargetMailboxLabel
       // 
       this.TargetMailboxLabel.AutoSize = true;
-      this.TargetMailboxLabel.Location = new System.Drawing.Point(2, 176);
+      this.TargetMailboxLabel.Location = new System.Drawing.Point(3, 206);
       this.TargetMailboxLabel.Name = "TargetMailboxLabel";
-      this.TargetMailboxLabel.Size = new System.Drawing.Size(79, 13);
+      this.TargetMailboxLabel.Size = new System.Drawing.Size(90, 13);
       this.TargetMailboxLabel.TabIndex = 2;
-      this.TargetMailboxLabel.Text = "Mailbox SMTP:";
+      this.TargetMailboxLabel.Text = "Mailboxes SMTP:";
       // 
-      // TargetMailboxText
+      // TargetMailboxesText
       // 
-      this.TargetMailboxText.Location = new System.Drawing.Point(91, 172);
-      this.TargetMailboxText.Name = "TargetMailboxText";
-      this.TargetMailboxText.Size = new System.Drawing.Size(221, 20);
-      this.TargetMailboxText.TabIndex = 3;
-      // 
-      // btnDefault365Settings
-      // 
-      this.btnDefault365Settings.Location = new System.Drawing.Point(299, 41);
-      this.btnDefault365Settings.Name = "btnDefault365Settings";
-      this.btnDefault365Settings.Size = new System.Drawing.Size(70, 23);
-      this.btnDefault365Settings.TabIndex = 3;
-      this.btnDefault365Settings.Text = "365 Default";
-      this.btnDefault365Settings.UseVisualStyleBackColor = true;
-      this.btnDefault365Settings.Click += new System.EventHandler(this.btnDefault365Settings_Click);
-      this.btnDefault365Settings.Enabled = false;
+      this.TargetMailboxesText.AcceptsReturn = true;
+      this.TargetMailboxesText.Location = new System.Drawing.Point(5, 222);
+      this.TargetMailboxesText.Multiline = true;
+      this.TargetMailboxesText.Name = "TargetMailboxesText";
+      this.TargetMailboxesText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      this.TargetMailboxesText.Size = new System.Drawing.Size(307, 178);
+      this.TargetMailboxesText.TabIndex = 3;
       // 
       // AutodiscoverViewerForm
       // 
@@ -619,7 +542,6 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.LightSteelBlue;
       this.ClientSize = new System.Drawing.Size(762, 483);
-      this.Controls.Add(this.txtInfo);
       this.Controls.Add(this.label11);
       this.Controls.Add(this.lblHeader3Value);
       this.Controls.Add(this.lblHeader2Value);
@@ -636,13 +558,9 @@
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.groupBox3);
       this.Controls.Add(this.btnDefaultSmtp);
-      this.Controls.Add(this.label6);
-      this.Controls.Add(this.txtValues);
       this.Controls.Add(this.chkOverrideUserAgent);
       this.Controls.Add(this.cmboUserAgent);
       this.Controls.Add(this.label5);
-      this.Controls.Add(this.label4);
-      this.Controls.Add(this.lvItems);
       this.Controls.Add(this.txtResults);
       this.Controls.Add(this.chkPreAuthenticate);
       this.Controls.Add(this.chkEnableScpLookup);
@@ -650,9 +568,9 @@
       this.Controls.Add(this.label7);
       this.Controls.Add(this.groupBox1);
       this.Controls.Add(this.TargetMailboxLabel);
-      this.Controls.Add(this.TargetMailboxText);
+      this.Controls.Add(this.TargetMailboxesText);
       this.Controls.Add(this.GoRun);
-      this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+      this.Margin = new System.Windows.Forms.Padding(4);
       this.Name = "AutodiscoverViewerForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "Autodiscover Viewer";
@@ -672,7 +590,7 @@
 
         private System.Windows.Forms.Button GoRun;
         private System.Windows.Forms.Label TargetMailboxLabel;
-        private System.Windows.Forms.TextBox TargetMailboxText;
+        private System.Windows.Forms.TextBox TargetMailboxesText;
         private System.Windows.Forms.CheckBox chkDefaultWindowsCredentials;
         private System.Windows.Forms.TextBox txtUser;
         private System.Windows.Forms.TextBox txtPassword;
@@ -686,15 +604,9 @@
         private System.Windows.Forms.ComboBox TempExchangeVersionCombo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtResults;
-        private System.Windows.Forms.ListView lvItems;
-        private System.Windows.Forms.ColumnHeader colType;
-        private System.Windows.Forms.ColumnHeader colValue;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmboUserAgent;
         private System.Windows.Forms.CheckBox chkOverrideUserAgent;
-        private System.Windows.Forms.TextBox txtValues;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnDefaultUser;
         private System.Windows.Forms.Button btnDefaultSmtp;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -721,7 +633,6 @@
         private System.Windows.Forms.Label lblHeader2Value;
         private System.Windows.Forms.Label lblHeader3Value;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtInfo;
         private System.Windows.Forms.Button btnDefault365Settings;
     }
 }

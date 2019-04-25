@@ -8,6 +8,7 @@ using Microsoft.Exchange.WebServices.Autodiscover;
 using Microsoft.Exchange.WebServices.Data;
 using EWSEditor.Common;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 
 namespace EWSEditor.Forms
 {
@@ -44,9 +45,6 @@ namespace EWSEditor.Forms
             rdoUseUserSpecifiedUrl.Checked = false;
             txtAutodiscoverServiceURL.Enabled = false;
 
-            txtInfo.Text = String.Empty;
-            txtInfo.BackColor = System.Drawing.SystemColors.Control;
-
             SetFields();
 
             SetEnablementOptionalHeaders();
@@ -74,11 +72,6 @@ namespace EWSEditor.Forms
                 txtResults.Update();
 
 
-                txtInfo.Text = string.Empty;
-                txtInfo.Update();
- 
-
-                
                 // Create the AutodiscoverService object and set the request
                 // ExchangeVersion if one was selected
                 AutodiscoverService service = null;
@@ -150,10 +143,8 @@ namespace EWSEditor.Forms
                 // Allow/Disallow following 302 redirects in the Autodiscover sequence
                 service.RedirectionUrlValidationCallback = ValidationCallbackHelper.RedirectionUrlValidationCallback;
 
-                AutodiscoverGetUserSettings(ref service, this.TargetMailboxText.Text.Trim());
+                AutodiscoverGetUserSettings(service, this.TargetMailboxesText.Lines);
 
-                txtInfo.Text = "Autodiscover URL used: " + service.Url;
-            
                 //GetUserSettingsResponse response = service.GetUserSettings(this.TargetMailboxText.Text, System.Enum.GetValues(typeof(UserSettingName)) as UserSettingName[]);
                 //ErrorDialog.ShowInfo("Autodiscover completed successfully!  Check the EWSEditor Log Viewer for detailed output.");
 
@@ -167,124 +158,21 @@ namespace EWSEditor.Forms
             }
         }
 
-        public void AutodiscoverGetUserSettings(ref AutodiscoverService service, string sUserSmtpAddress)
+        public void AutodiscoverGetUserSettings(AutodiscoverService service, string[] sUserSmtpAddresses)
         { 
             string sRet = string.Empty;
-            lvItems.Items.Clear();
             txtResults.Text = string.Empty;
 
             try
             {
-                GetUserSettingsResponse response = service.GetUserSettings(
-                    sUserSmtpAddress,
+                GetUserSettingsResponseCollection response = service.GetUsersSettings(
+                    sUserSmtpAddresses.Select(addr => addr.Trim()),
                     System.Enum.GetValues(typeof(UserSettingName)) as UserSettingName[]);
                 
                
                 if (response.ErrorCode == AutodiscoverErrorCode.NoError)
                 {
-                    AutodiscoverResultForm.Show(this, new [] { new AutodiscoverResultForm.AutodiscoverResult(response, service.Url) });
-                    string sLine = string.Empty;
-                    sLine += "Finished.  \r\n";
-                    sLine += "Response Redirect Target: " + response.RedirectTarget + "\r\n";
-                    sLine += "\r\n";
-
-                    // Display each retrieved value. The settings are part of a key value pair.
-                    string sValue = string.Empty;
-                    string sType = string.Empty;
-                    int ValueCount = 0;
-                    foreach (KeyValuePair<UserSettingName, Object> usersetting in response.Settings)
-                    {
-                        sValue = string.Empty;
-
-                        ValueCount = 0;
-                        sType = usersetting.Value.ToString();
-                        switch (sType)
-                        {
-                            case ("Microsoft.Exchange.WebServices.Autodiscover.WebClientUrlCollection"):
-                                Microsoft.Exchange.WebServices.Autodiscover.WebClientUrlCollection oCollection1;
-                                oCollection1 = (Microsoft.Exchange.WebServices.Autodiscover.WebClientUrlCollection)usersetting.Value;
-                                foreach (WebClientUrl oUrl in oCollection1.Urls)
-                                {
-                                    sValue += string.Format("Url: {0} \r\n" +
-                                                "Authentication: {1}\r\n", 
-                                                oUrl.Url, 
-                                                oUrl.AuthenticationMethods);
-                                    ValueCount++;
-                                }
-                                break;
-                            case ("Microsoft.Exchange.WebServices.Autodiscover.ProtocolConnectionCollection"):
-                                Microsoft.Exchange.WebServices.Autodiscover.ProtocolConnectionCollection oCollection2;
-                                oCollection2 = (Microsoft.Exchange.WebServices.Autodiscover.ProtocolConnectionCollection)usersetting.Value;
-                                foreach (ProtocolConnection oProtocolConnection in oCollection2.Connections)
-                                {
-                                    sValue += string.Format("Hostname: {0} \r\n" +
-                                                "Port: {1}\r\n" +
-                                                "EncryptionMethod: {2}\r\n", 
-                                                oProtocolConnection.Hostname, 
-                                                oProtocolConnection.Port, 
-                                                oProtocolConnection.EncryptionMethod);
-                                    ValueCount++;
-                                }
-                                break;
-    case ("Microsoft.Exchange.WebServices.Autodiscover.AlternateMailboxCollection"):
-        Microsoft.Exchange.WebServices.Autodiscover.AlternateMailboxCollection oCollection3;
-        oCollection3 = (Microsoft.Exchange.WebServices.Autodiscover.AlternateMailboxCollection)usersetting.Value;
-        foreach (AlternateMailbox oAlternativeMailbox in oCollection3.Entries)
-        {
-            sValue += string.Format(
-                            "Type: {0} \r\n" +
-                            "DisplayName: {1} \r\n" +   
-                            "LegacyDN: {2} \r\n" +      
-                            "Server: {3} \r\n" +
-                            "SmtpAddress: {4} \r\n" +
-                            "OwnerSmtpAddress: {5} \r\n" +
-                            "\r\n", 
-
-                oAlternativeMailbox.Type,
-                oAlternativeMailbox.DisplayName,
-                oAlternativeMailbox.LegacyDN,
-                oAlternativeMailbox.Server,
-                oAlternativeMailbox.SmtpAddress,
-                oAlternativeMailbox.OwnerSmtpAddress
-            
-                );
-            ValueCount++;
-        }
-                                break;
-                            default:
-                                sValue = string.Format("{0}\r\n", usersetting.Value.ToString());
-                                break;
-
-
-                        }
-                        ListViewItem oItem = new ListViewItem(usersetting.Key.ToString());
-                        ListViewItem.ListViewSubItem o = oItem.SubItems.Add(sValue);
-                        if (ValueCount > 1)
-                            o.ForeColor = System.Drawing.Color.DarkBlue;
-                        lvItems.Items.Add(oItem); // Add to grid
-
-
-                        //sLine = string.Format("{0}:               {1}", usersetting.Key.ToString(), sValue);
-
-                        //sRet += sLine;
-                    }
-
-                    //sRet += "\r\n\r\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\r\n\r\n";
-                    //sRet += "Response Information: \r\n\r\n";
-                    //sRet += "  Response Redirect Target: " + response.RedirectTarget + "\r\n";
-                    //sRet += "  Response Errors: \r\n";
-                    //sRet += "     ErrorCode: " + response.ErrorCode + "\r\n";
-                    //sRet += "     ErrorMessage: " + response.ErrorMessage + "\r\n";
-                    //sRet += "     Error on settings not returned:  \r\n";
-                    //sRet += "\r\n";
-                    //foreach (UserSettingError oError in response.UserSettingErrors)
-                    //{
-                    //    sRet += "Setting: " + oError.SettingName + "\r\n";
-                    //    sRet += "   ErrorCode: " + oError.ErrorCode + "\r\n";
-                    //    sRet += "   ErrorCode: " + oError.ErrorMessage + "\r\n";
-                    //    sRet += "\r\n--\r\n";
-                    //}
-           
+                    AutodiscoverResultForm.Show(this, response.Select(r => new AutodiscoverResultForm.AutodiscoverResult(r, service.Url)));
                 }
                 else
                 {
@@ -371,60 +259,14 @@ namespace EWSEditor.Forms
             this.Close();
         }
 
-        private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lvItems.SelectedItems.Count > 0)
-            {
-                txtValues.Text = lvItems.SelectedItems[0].SubItems[1].Text;
-            }
-            else
-            {
-                txtValues.Text = string.Empty;
-            }
-        }
-
-        private void lvItems_DoubleClick(object sender, EventArgs e)
-        {
-            string sDisplay = string.Empty;
-            if (lvItems.SelectedItems.Count > 0)
-            {
-                sDisplay += "Type: \r\n";  
-                sDisplay += "-----\r\n" + lvItems.SelectedItems[0].Text;
-           
-                sDisplay += "\r\n\r\n";
-
-                sDisplay += "Value(s): \r\n";
-                sDisplay += "---------\r\n" + lvItems.SelectedItems[0].SubItems[1].Text;
-
-                ShowTextDocument oForm = new ShowTextDocument();
-                oForm.txtEntry.WordWrap = false;
-                oForm.Text = "Values for item";
-                oForm.txtEntry.Text = sDisplay;
-                oForm.ShowDialog();
-            }
-        }
-
         private void chkOverrideUserAgent_CheckedChanged(object sender, EventArgs e)
         {
             this.cmboUserAgent.Enabled = chkOverrideUserAgent.Checked;
         }
 
-        private void lvItems_Click(object sender, EventArgs e)
-        {
- 
-            if (lvItems.SelectedItems.Count > 0)
-            {
-                txtValues.Text = lvItems.SelectedItems[0].SubItems[1].Text;
-            }
-            else
-            {
-                txtValues.Text = string.Empty;
-            }
-        }
-
         private void btnDefaultSmtp_Click(object sender, EventArgs e)
         {
-            TargetMailboxText.Text = UserPrincipal.Current.EmailAddress;
+            TargetMailboxesText.Text = UserPrincipal.Current.EmailAddress;
         }
 
         private void btnDefaultUser_Click(object sender, EventArgs e)
