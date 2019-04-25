@@ -69,6 +69,9 @@
             AddTypeValue(new AttendeeCollectionTypeValue());
             AddTypeValue(new WorkingHoursTypeValue());
             AddTypeValue(new LegacyFreeBusyStatusCollectionTypeValue());
+            AddTypeValue(new AutodiscoverWebClientUrlCollectionTypeValue());
+            AddTypeValue(new AutodiscoverProtocolConnectionCollectionTypeValue());
+            AddTypeValue(new AutodiscoverAlternateMailboxCollectionTypeValue());
         }
 
         private static void AddTypeValue(ITypeValue obj)

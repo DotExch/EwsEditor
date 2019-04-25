@@ -666,6 +666,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="PropertyInformation\TypeValues\AutodiscoverAlternateMailboxCollectionTypeValue.cs" />
+    <Compile Include="PropertyInformation\TypeValues\AutodiscoverProtocolConnectionCollectionTypeValue.cs" />
+    <Compile Include="PropertyInformation\TypeValues\AutodiscoverWebClientUrlCollectionTypeValue.cs" />
+    <Compile Include="PropertyInformation\TypeValues\SimpleTypeValueBase.cs" />
     <Compile Include="RemotePowerShell\PowerShellForm.cs">
       <SubType>Form</SubType>
     </Compile>
