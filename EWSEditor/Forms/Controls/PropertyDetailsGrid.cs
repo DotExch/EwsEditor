@@ -393,7 +393,9 @@ namespace EWSEditor.Forms.Controls
                         row.Type = propInter.TypeName;
                         row.PropertyObject = userSetting;
                         row.SortName = row.Name;
-                        row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
+                        row.Icon = !propInter.HasErrors ?
+                            global::EWSEditor.Properties.Resources.FirstProp :
+                            global::EWSEditor.Properties.Resources.Error;
 
                         // Add the row to the table
                         propList.AddPropertyListRow(row);
@@ -437,7 +439,9 @@ namespace EWSEditor.Forms.Controls
                         propInter.Value.Length > MAX_VALUE_LENGTH ? MAX_VALUE_LENGTH : propInter.Value.Length);
                     row.Type = propInter.TypeName;
                     row.PropertyObject = propInfo;
-                    row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
+                    row.Icon = !propInter.HasErrors ?
+                        global::EWSEditor.Properties.Resources.FirstProp :
+                        global::EWSEditor.Properties.Resources.Error;
                     row.SortName = string.Concat("a", row.Name);
 
                     // Add the row to the table

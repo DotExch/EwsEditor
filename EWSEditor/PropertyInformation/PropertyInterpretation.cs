@@ -25,6 +25,8 @@ namespace EWSEditor.PropertyInformation
         public readonly string AlternateNames = string.Empty;
         public readonly string Comments = string.Empty;
 
+        public bool HasErrors { get; }
+
         #region Constructors
 
         private PropertyInterpretation() { }
@@ -47,7 +49,8 @@ namespace EWSEditor.PropertyInformation
         public PropertyInterpretation(object ownerInstance, PropertyInfo propInfo)
         {
             Name = GetPropertyName(propInfo);
-            Value = GetPropertyValue(ownerInstance, propInfo, out TypeName);
+            Value = GetPropertyValue(ownerInstance, propInfo, out TypeName, out bool hasErrors);
+            HasErrors = hasErrors;
         }
 
         /// <summary>
@@ -80,7 +83,8 @@ namespace EWSEditor.PropertyInformation
         public PropertyInterpretation(GetUserSettingsResponse owner, UserSettingName userSettingName)
         {
             Name = GetPropertyName(userSettingName);
-            Value = GetPropertyValue(owner, userSettingName, out TypeName);
+            Value = GetPropertyValue(owner, userSettingName, out TypeName, out bool hasErrors);
+            HasErrors = hasErrors;
         }
 
         #endregion
@@ -350,8 +354,7 @@ namespace EWSEditor.PropertyInformation
         /// </returns>
         public static string GetPropertyValue(object ownerInstance, PropertyInfo propInfo)
         {
-            string dummy;
-            return GetPropertyValue(ownerInstance, propInfo, out dummy);
+            return GetPropertyValue(ownerInstance, propInfo, out _, out _);
         }
 
         /// <summary>
@@ -365,9 +368,10 @@ namespace EWSEditor.PropertyInformation
         /// <returns>
         /// Text representation of a property value.
         /// </returns>
-        public static string GetPropertyValue(object ownerInstance, PropertyInfo propInfo, out string typeName)
+        public static string GetPropertyValue(object ownerInstance, PropertyInfo propInfo, out string typeName, out bool hasErrors)
         {
             string value = string.Empty;
+            hasErrors = false;
 
             try
             {
@@ -396,6 +400,7 @@ namespace EWSEditor.PropertyInformation
                 // the inner exception text is nice
                 typeName = tie.InnerException.GetType().Name;
                 value = tie.InnerException.Message;
+                hasErrors = true;
 
                 DebugLog.WriteVerbose("Handled TargetInvocationException", tie);
             }
@@ -403,6 +408,7 @@ namespace EWSEditor.PropertyInformation
             {
                 typeName = ex.GetType().Name;
                 value = ex.Message;
+                hasErrors = true;
 
                 DebugLog.WriteVerbose("Handled exception", ex);
             }
@@ -410,10 +416,11 @@ namespace EWSEditor.PropertyInformation
             return value;
         }
 
-        public string GetPropertyValue(GetUserSettingsResponse owner, UserSettingName userSettingName, out string typeName)
+        public string GetPropertyValue(GetUserSettingsResponse owner, UserSettingName userSettingName, out string typeName, out bool hasErrors)
         {
             object value = null;
             typeName = string.Empty;
+            hasErrors = false;
             if (owner.Settings.TryGetValue(userSettingName, out value))
             {
                 if (value == null)
@@ -427,6 +434,7 @@ namespace EWSEditor.PropertyInformation
                 if (err.SettingName != userSettingName.ToString())
                     continue;
                 typeName = typeof(UserSettingError).FullName;
+                hasErrors = true;
                 return $"{err.ErrorCode}: {err.ErrorMessage}";
             }
             return string.Empty;
