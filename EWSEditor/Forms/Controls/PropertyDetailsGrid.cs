@@ -27,6 +27,12 @@ namespace EWSEditor.Forms.Controls
         public delegate void PropertyChangedEventHandler(object sender, EventArgs e);
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool ShowKnownNamesColumn
+        {
+            get => KnownNamesColumn.Visible;
+            set => KnownNamesColumn.Visible = value;
+        }
+
         public PropertyDetialsGrid()
         {
             InitializeComponent();
@@ -117,32 +123,30 @@ namespace EWSEditor.Forms.Controls
                 }
             }
 
-            this.PropertyListDataGridView.DataSource = GetPropertyList(this.CurrentObject);
-            this.PropertyListDataGridView.Sort(this.NameColumn, ListSortDirection.Ascending);
-
-            // If the width of the control minus all other column widths is greater
-            // than the default width of the ValueColumn, extend the width of the
-            // ValueColumn to display as much data as possible.
-            int availableWidth = this.PropertyListDataGridView.Width -
-                 (this.NameColumn.Width + this.KnownNamesColumn.Width + this.TypeColumn.Width + this.SmartViewColumn.Width);
-            if (availableWidth > this.ValueColumn.Width)
-                this.ValueColumn.Width = availableWidth;
+            LoadCurrentObject();
         }
 
         public void LoadObject(object o)
         {
             this.CurrentObject = o;
+            LoadCurrentObject();
+        }
+
+        private void LoadCurrentObject()
+        {
             this.PropertyListDataGridView.DataSource = GetPropertyList(this.CurrentObject);
             this.PropertyListDataGridView.Sort(this.NameColumn, ListSortDirection.Ascending);
 
             // If the width of the control minus all other column widths is greater
             // than the default width of the ValueColumn, extend the width of the
             // ValueColumn to display as much data as possible.
-            int availableWidth = this.PropertyListDataGridView.Width - 
-                 (this.NameColumn.Width + this.KnownNamesColumn.Width + this.TypeColumn.Width + this.SmartViewColumn.Width);
+            int knownNamesColumnWidth = KnownNamesColumn.Visible ? KnownNamesColumn.Width : 0;
+            int availableWidth = this.PropertyListDataGridView.Width -
+                 (this.NameColumn.Width + knownNamesColumnWidth + this.TypeColumn.Width + this.SmartViewColumn.Width);
             if (availableWidth > this.ValueColumn.Width)
                 this.ValueColumn.Width = availableWidth;
         }
+
 
         public void Clear()
         {

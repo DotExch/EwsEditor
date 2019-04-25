@@ -51,6 +51,7 @@ namespace EWSEditor.Forms
         protected override void SetupForm()
         {
             base.SetupForm();
+            PropertyDetailsGrid.ShowKnownNamesColumn = false;
             ContentsGrid.Columns.Clear();
             var cols = ContentsGrid.Columns;
             int col;
