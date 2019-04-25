@@ -123,18 +123,18 @@ namespace EWSEditor.Forms.Controls
                 }
             }
 
-            LoadCurrentObject();
+            LoadPropertyList(propList);
         }
 
         public void LoadObject(object o)
         {
-            this.CurrentObject = o;
-            LoadCurrentObject();
+            CurrentObject = o;
+            LoadPropertyList(GetPropertyList(CurrentObject));
         }
 
-        private void LoadCurrentObject()
+        private void LoadPropertyList(GridDataTables.PropertyListDataTable propList)
         {
-            this.PropertyListDataGridView.DataSource = GetPropertyList(this.CurrentObject);
+            this.PropertyListDataGridView.DataSource = propList;
             this.PropertyListDataGridView.Sort(this.NameColumn, ListSortDirection.Ascending);
 
             // If the width of the control minus all other column widths is greater

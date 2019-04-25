@@ -98,7 +98,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
             this.PropIconColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.PropIconColumn.HeaderText = "";
-            this.PropIconColumn.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.PropIconColumn.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.PropIconColumn.Name = "PropIconColumn";
             this.PropIconColumn.ReadOnly = true;
             this.PropIconColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
