@@ -376,26 +376,48 @@ namespace EWSEditor.Forms.Controls
             }
             else if (obj is GetUserSettingsResponse resp)
             {
-                var availableUserSettings = new HashSet<UserSettingName>(resp.Settings.Keys);
-                foreach (UserSettingError err in resp.UserSettingErrors)
+                if (resp.ErrorCode == AutodiscoverErrorCode.NoError)
                 {
-                    if (Enum.TryParse(err.SettingName, out UserSettingName v))
-                        availableUserSettings.Add(v);
-                }
-                foreach (UserSettingName userSetting in availableUserSettings)
-                {
-                    GridDataTables.PropertyListRow row = propList.NewPropertyListRow();
-                    var propInter = new PropertyInterpretation(resp, userSetting);
-                    row.Name = propInter.Name;
-                    row.Value = propInter.Value;
-                    row.Type = propInter.TypeName;
-                    row.PropertyObject = userSetting;
-                    row.SortName = row.Name;
-                    //if (row.Type == typeof(UserSettingError).FullName)
-                    row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
+                    var availableUserSettings = new HashSet<UserSettingName>(resp.Settings.Keys);
+                    foreach (UserSettingError err in resp.UserSettingErrors)
+                    {
+                        if (Enum.TryParse(err.SettingName, out UserSettingName v))
+                            availableUserSettings.Add(v);
+                    }
+                    foreach (UserSettingName userSetting in availableUserSettings)
+                    {
+                        GridDataTables.PropertyListRow row = propList.NewPropertyListRow();
+                        var propInter = new PropertyInterpretation(resp, userSetting);
+                        row.Name = propInter.Name;
+                        row.Value = propInter.Value;
+                        row.Type = propInter.TypeName;
+                        row.PropertyObject = userSetting;
+                        row.SortName = row.Name;
+                        row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
 
-                    // Add the row to the table
+                        // Add the row to the table
+                        propList.AddPropertyListRow(row);
+                    }
+                }
+                else
+                {
+                    var row = propList.NewPropertyListRow();
+                    row.Name = "(Error)";
+                    row.Value = $"{resp.ErrorCode}: {resp.ErrorMessage}";
+                    row.SortName = row.Name;
+                    row.Icon = global::EWSEditor.Properties.Resources.Error;
                     propList.AddPropertyListRow(row);
+
+                    if (resp.ErrorCode == AutodiscoverErrorCode.RedirectAddress || resp.ErrorCode == AutodiscoverErrorCode.RedirectUrl)
+                    {
+                        row = propList.NewPropertyListRow();
+                        row.Name = "RedirectTarget";
+                        row.Value = resp.RedirectTarget;
+                        row.SortName = row.Name;
+                        row.Type = typeof(string).FullName;
+                        row.Icon = global::EWSEditor.Properties.Resources.FirstProp;
+                        propList.AddPropertyListRow(row);
+                    }
                 }
             }
             else

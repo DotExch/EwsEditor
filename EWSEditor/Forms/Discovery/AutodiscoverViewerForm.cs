@@ -166,7 +166,7 @@ namespace EWSEditor.Forms
             try
             {
                 GetUserSettingsResponseCollection response = service.GetUsersSettings(
-                    sUserSmtpAddresses.Select(addr => addr.Trim()),
+                    sUserSmtpAddresses.Select(addr => addr.Trim()).Where(addr => addr != ""),
                     System.Enum.GetValues(typeof(UserSettingName)) as UserSettingName[]);
                 
                
