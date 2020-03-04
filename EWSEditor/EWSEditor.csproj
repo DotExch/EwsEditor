@@ -1729,7 +1729,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ews-managed-api\Microsoft.Exchange.WebServices.Data.csproj">
+    <ProjectReference Include="..\ews-managed-api\Microsoft.Exchange.WebServices.Data.csproj">
       <Project>{f059972f-0561-4203-abb8-3abb41ccbe22}</Project>
       <Name>Microsoft.Exchange.WebServices.Data</Name>
     </ProjectReference>

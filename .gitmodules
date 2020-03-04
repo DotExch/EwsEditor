@@ -1,0 +1,3 @@
+[submodule "ews-managed-api"]
+	path = ews-managed-api
+	url = https://github.com/cBrain-dk/ews-managed-api.git

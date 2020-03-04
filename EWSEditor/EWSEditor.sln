@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWSEditor", "EWSEditor.csproj", "{B09745B3-7ACC-492C-9101-51111972316B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Exchange.WebServices.Data", "..\..\ews-managed-api\Microsoft.Exchange.WebServices.Data.csproj", "{F059972F-0561-4203-ABB8-3ABB41CCBE22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Exchange.WebServices.Data", "..\ews-managed-api\Microsoft.Exchange.WebServices.Data.csproj", "{F059972F-0561-4203-ABB8-3ABB41CCBE22}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0887C7EC-A7E7-4BDF-A8A0-F1D6A66AF993}"
 	ProjectSection(SolutionItems) = preProject
